@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+
 import Person from './Person/Person'
-import ValidationComponent from './ValidationComponent/ValidationComponent'
-import CharComponent from './CharComponent/CharComponent';
 
 class App extends Component {
   state = {
@@ -11,8 +10,7 @@ class App extends Component {
       {id: '23ofmweef', name: 'Caitie', age: 29},
       {id: '23iomoi2j3', name: 'Koa', age: 6}
     ],
-    inputLength: 0,
-    inputValue: '',
+
   }
 
   deletePersonHandler = (personIndex) => {
@@ -49,35 +47,15 @@ class App extends Component {
     })
   }
 
-  fieldChangeHandler = (event) => {
-    const pLength = event.target.value.length
-    const pValue = event.target.value
-
-    this.setState({
-      inputLength: pLength,
-      inputValue: pValue
-    })
-  }
-
-  deleteCharHandler = (charIndex) => {
-    const inputValue = this.state.inputValue.split('')
-    console.log(inputValue)
-    console.log(charIndex)
-    inputValue.splice(charIndex, 1);
-    console.log(inputValue)
-    this.setState({
-      inputValue: inputValue.join(''),
-      inputLength: inputValue.length
-    })
-  }
 
   render () {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
+      color: 'white',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
-      cursor: 'pointer'
+      cursor: 'pointer',
     }
 
     let persons = null
@@ -96,35 +74,31 @@ class App extends Component {
           })}
         </div>
       )
+      style.backgroundColor = 'red';
+      
     }
-    let charItems = null
-    if (this.state.inputValue.length > 0) {
-      let chars = this.state.inputValue.split('')
-      charItems = chars.map((char, index) => {
-        return (
-          <CharComponent 
-            click={() => this.deleteCharHandler(index)}
-            char={char}
-            key={index}
-          />
-        )
-      })
 
+    const classes = []
+    if (this.state.persons.length <= 2) {
+      classes.push('red') //classes = ['red']
     }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold') // classes = ['red', 'bold']
+    }
+
     
     return (
+
       <div className="App">
         <h1>Hi, I'm a React App</h1>
-        <input type='text' value={this.state.inputValue} onChange={this.fieldChangeHandler}/>
-        <p>{this.state.inputLength}</p>
-        <ValidationComponent inputLength={this.state.inputLength}/>
-        {charItems}
-        <br/>
+        <p className={classes.join(' ')}>This is really working!</p>
         <button 
         style={style}
         onClick={this.togglePersonsHandler} >Toggle Persons</button>
         {persons}
       </div>
+
+
     );
   }
 }
